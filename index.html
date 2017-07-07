@@ -1,0 +1,82 @@
+<html>
+	<head>
+		<script type="x-shader/vertex-shader" id="shader-vs">
+			attribute vec3 position;
+			attribute vec3 normal;
+			attribute vec2 uv;
+
+			varying vec3 frag_position;
+			varying vec3 frag_normal;
+			varying vec2 frag_uv; 
+
+			uniform mat4 perspectiveMatrix;
+			uniform mat4 viewMatrix;
+			uniform mat4 modelMatrix;
+			void main() {
+				frag_position = position;
+				frag_normal = normal;
+				frag_uv = uv;
+				mat4 mvp = perspectiveMatrix * viewMatrix * modelMatrix;
+				gl_Position = mvp * vec4(position, 1.0);
+			}
+		</script>
+		<script type="x-shader/fragment-shader" id="shader-fs">
+			precision highp float;
+			varying vec3 frag_position;
+			varying vec3 frag_normal;
+			varying vec2 frag_uv;
+
+			uniform sampler2D diffuse; 
+			void main() {
+				vec4 texColor = texture2D(diffuse, frag_uv);
+				gl_FragColor = texColor;
+			}
+		</script>
+	</head>
+	<body>
+	  <canvas id="glCanvas" width="640" height="480">
+	    Your browser doesn't appear to support the 
+	    <code>&lt;canvas&gt;</code> element.
+	  </canvas>
+	  <div style="position: absolute; left:20px; top: 20px; color:#000; font-size: 13px;" id="glInfo">FPS: </div>
+	</body>
+	<script type="text/javascript" src="./gl-matrix-min.js"></script>
+	<script type="text/javascript" src="./glenv.js"></script>
+	<script type="text/javascript">
+	var lastRenderTime = (new Date()).getTime(); // 上次渲染的时间
+	var elapsedTime = 0; // 经过的总时间
+	var glInfoNode = null;
+	var collectedFrameCount = 0;
+	var collectedFrameDuration = 0;
+	var canvas = null;
+	window.onresize = function() {
+		resize(window.innerWidth, window.innerHeight);
+	}
+	window.onload = function() {
+		glInfoNode = document.getElementById("glInfo");
+		setupGLEnv('glCanvas');
+		resize(window.innerWidth, window.innerHeight);
+		renderLoop();
+	}
+	function renderLoop() {
+		now = (new Date()).getTime();
+		deltaTime = now - lastRenderTime;
+		lastRenderTime = now;
+		elapsedTime += deltaTime;
+		render(deltaTime, elapsedTime);
+
+		collectedFrameDuration += deltaTime;
+		collectedFrameCount++;
+		if (collectedFrameCount >= 10) {
+			fps = parseInt(1000.0 * collectedFrameCount / collectedFrameDuration);
+			if (isNaN(fps) == false || fps < 1000) {
+				glInfoNode.textContent = "FPS: " + fps;
+			}
+			collectedFrameCount = 0;
+			collectedFrameDuration = 0;
+		}
+	 	requestAnimationFrame(renderLoop);
+	}
+	requestAnimationFrame(renderLoop);
+	</script>
+</html>
