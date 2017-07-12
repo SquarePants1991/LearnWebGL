@@ -31,17 +31,6 @@ function makeShader(shaderSrc, shaderType) {
   return shader;
 }
 
-function makeBuffer() {
-  var triangle = [
-    0.0, 0.5, 0.0, -0.5, -0.5, 0.0,
-    0.5, -0.5, 0.0,
-  ];
-  buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(triangle), gl.STATIC_DRAW);
-  return buffer;
-}
-
 function setupGLEnv(canvasID) {
   canvas = document.getElementById(canvasID);
   gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');

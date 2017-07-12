@@ -1,0 +1,58 @@
+<html>
+<head>
+<script type="x-shader/vertex-shader" id="shader-vs">
+            attribute vec4 position;
+            varying vec4 fragColor;
+            uniform float elapsedTime;
+            uniform mat4 transform;
+            void main() {
+                fragColor = position * 0.5 + 0.5;
+                gl_Position = transform * position;
+                gl_PointSize = 20.0;
+            }
+</script>
+<script type="x-shader/fragment-shader" id="shader-fs">
+            varying mediump vec4 fragColor;
+            void main() {
+                gl_FragColor = fragColor;
+            }
+</script>
+<style type="text/css">
+  * {
+    margin: 0px;
+    padding: 0px;
+  }
+  #glInfo {
+    font-size: 13px;
+    color: #ffffff;
+    position:absolute;
+    top:8px; 
+    left:10px;
+  }
+
+  #modeSelection {
+    position:absolute;
+    right: 10px;
+    top: 8px;
+  }
+</style>
+</head>
+<body>
+<div style="width: 100%; height: 300px; position:relative; background:rgba(1.0,0,0,0);">
+  <canvas id="glCanvas" width="400" height="300">
+    Your browser doesn't appear to support the 
+    <code>&lt;canvas&gt;</code> element.
+  </canvas>
+  <div id="glInfo" style=""></div>
+  <div id="modeSelection">
+      <select id="projectionModeSelect">
+        <option value="perspective">透视投影</option>
+        <option value="ortho">正交投影</option>
+      </select>
+  </div>
+</div>
+<script type="text/javascript" src="../jslib/gl-matrix-min.js"></script>
+<script type="text/javascript" src="./script.js"></script>
+<script type="text/javascript" src="../jslib/glBase.js"></script>
+</body>
+</html>
