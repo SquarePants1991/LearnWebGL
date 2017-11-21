@@ -66,7 +66,7 @@ window.onWebGLRender = function render(deltaTime, elapesdTime) {
   // 设置第二个model matrix
   rotateMatrix = mat4.create();
   translateMatrix = mat4.create();
-  mat4.rotate(rotateMatrix, rotateMatrix, varyingFactor * Math.PI, vec3.fromValues(0, 0, 1));
+  mat4.rotate(rotateMatrix, rotateMatrix, varyingFactor * Math.PI * 2, vec3.fromValues(0, 0, 1));
   mat4.translate(translateMatrix, translateMatrix, vec3.fromValues(0.7, 0, 0));
   mat4.multiply(modelMatrix2, translateMatrix, rotateMatrix);
 

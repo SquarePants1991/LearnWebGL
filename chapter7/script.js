@@ -73,7 +73,7 @@ window.onWebGLLoad = function () {
 window.onWebGLRender = function render(deltaTime, elapesdTime) {
   gl.viewport(0, 0, canvas.width, canvas.height);
   gl.clearColor(0.2, 0.2, 0.2, 1.0);
-  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
   gl.useProgram(program);
   gl.bindBuffer(gl.ARRAY_BUFFER, triangleBuffer);
@@ -89,7 +89,6 @@ window.onWebGLRender = function render(deltaTime, elapesdTime) {
 
   var varyingFactor = (Math.sin(elapsedTime / 1000) + 1) / 2.0; // 0 ~ 1
 
-  // 设置第一个model matrix
   var rotateMatrix = mat4.create();
   var translateMatrix = mat4.create();
   mat4.rotate(rotateMatrix, rotateMatrix, varyingFactor * Math.PI * 2, vec3.fromValues(1, 1, 1));
